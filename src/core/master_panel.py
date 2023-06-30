@@ -2,7 +2,44 @@ from typing import Any, Literal, Self
 import dataclasses as dc
 from ..core.Interface import AFM
 
-_possible_params = Literal['ScanSize']
+_possible_params = Literal["ScanSize",
+    "PointLines",
+    "ScanRate",
+    "ImagingMode",
+    "AmplitudeSetpointVolts",
+    "DriveAmplitude",
+    "DriveFrequency",
+    "IntegralGain",
+    "ScanSpeed",
+    "ScanAngle",
+    "XOffset",
+    "YOffset",
+    "ScanPoints",
+    "ScanLines",
+    "ProportionalGain",
+    "FBFilterBW",
+    "BaseSuffix",
+    "StartDist",
+    "ForceDist",
+    "ForceScanRate",
+    "Velocity",
+    "VelocitySynch",
+    "ApproachVelocity",
+    "RetractVelocity",
+    "DwellTime",
+    "NumPtsPerSec",
+    "ForceFilterBW",
+    "InvOLS",
+    "KappaFactor",
+    "AmpInvOLS",
+    "DisplaySpringConstant",
+    "ForceSpotNumber",
+    "TriggerPoint",
+    "FmapScanTime",
+    "FmapXYVelocity",
+    "FMapScanPoints",
+    "FMapScanLines",
+    "FMapBaseSuffix",]
 
 @dc.dataclass
 class MainPanel(AFM):
