@@ -1,18 +1,19 @@
+from typing import Any, Literal, Self
+import dataclasses as dc
 from ..core.Interface import AFM
 
+_possible_params = Literal['ScanSize']
+
+@dc.dataclass
 class MainPanel(AFM):
-
-    def __init__(self, script = True):
-        super().__init__
-        self.command_list = []
-
+    command_list: list = dc.field(default_factory=list())
+    script: bool = True
+    
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
 
-    def ScanSize(self, value):
-        string_command = self.SetValue("ScanSize", value)
-        self.on_update(string_command)
-    # to Replace the necessary command refer to Variable4masterPanel     
+    def update_params(self: Self, param: _possible_params, value: Any):
+        self.on_update(self.SetValue(param, value))  
 
     def on_update(self, str_update):
         if self.script:
