@@ -1,0 +1,5 @@
+PV("ScanSize",10)
+PV("ScanRate",5.0)
+PV("IntegralGain",0.01)
+PV("AmplitudeSetpointVolts",0.5)
+PV("DriveFrequency",1000)
