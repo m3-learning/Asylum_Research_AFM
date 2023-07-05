@@ -6,7 +6,11 @@ class AFM:
 
         self.basepath = basepath
         self.igor_path = igor_path
+        self.igor_path = igor_path
         self.filename = filename
+        self.bat = f"{self.cmd_basepath}\\\\{self.filename}.bat"
+        self.arcmd = f"{self.cmd_basepath}\\\\{self.filename}.arcmd"
+        self.verbose = verbose
         self.bat = f"{self.cmd_basepath}\\\\{self.filename}.bat"
         self.arcmd = f"{self.cmd_basepath}\\\\{self.filename}.arcmd"
         self.verbose = verbose
@@ -48,5 +52,3 @@ class AFM:
         
         if self.verbose:
             return outs, errs
-
-    
