@@ -1,6 +1,6 @@
 from typing import Any, Literal, Self
 import dataclasses as dc
-from ..core.Interface import AFM
+from src.core.Interface import AFM
 
 _possible_params = Literal["ScanSize",
     "PointLines",
@@ -43,9 +43,9 @@ _possible_params = Literal["ScanSize",
 
 @dc.dataclass
 class MainPanel(AFM):
-    command_list: list = dc.field(default_factory=list())
+    command_list: list = dc.field(default_factory=list)
     script: bool = True
-    
+        
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
 
@@ -59,6 +59,7 @@ class MainPanel(AFM):
             self.write_arcmd(str_update)
             self.send_command()
 
+    
     # TODO add setter and return statement for command list
 
      
