@@ -2,18 +2,14 @@ from subprocess import Popen, TimeoutExpired
 
 class AFM:
 
-    def __init__(self, igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe", basepath='./', filename='ToIgor', verbose = False):
+    def __init__(self, igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe", basepath='./', filename='ToIgor', verbose = False):  # noqa: E501
 
         self.basepath = basepath
         self.igor_path = igor_path
-        self.igor_path = igor_path
         self.filename = filename
-        self.bat = f"{self.cmd_basepath}\\\\{self.filename}.bat"
         self.arcmd = f"{self.cmd_basepath}\\\\{self.filename}.arcmd"
         self.verbose = verbose
         self.bat = f"{self.cmd_basepath}\\\\{self.filename}.bat"
-        self.arcmd = f"{self.cmd_basepath}\\\\{self.filename}.arcmd"
-        self.verbose = verbose
 
         self.write_bat()
 
