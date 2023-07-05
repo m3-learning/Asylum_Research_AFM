@@ -1,4 +1,4 @@
-from typing import Any, Literal, Self
+from typing import Any, Literal, Type 
 import dataclasses as dc
 from src.core.Interface import AFM
 
@@ -49,7 +49,7 @@ class MainPanel(AFM):
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
 
-    def update_params(self: Self, param: _possible_params, value: Any):
+    def update_params(self: Type['MainPanel'], param: _possible_params, value: Any):
         self.on_update(self.SetValue(param, value))  
 
     def on_update(self, str_update):
