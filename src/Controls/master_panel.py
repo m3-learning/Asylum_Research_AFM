@@ -52,20 +52,20 @@ class MainPanel(AFM):
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
     
-    def ChangePopUpImage(self, variable, value):
+    def ChangePopupImage(self, variable, value):
         return f'PopupMenu {variable}Popup_0 mode={value}'
       
-    def ChangePopUpForce(self, variable, value):
+    def ChangePopupForce(self, variable, value):
         return f'PopupMenu {variable}Popup_1 mode={value}'
 
     def update_params(self: Type['MainPanel'], param: _possible_params, value: Any):
         self.on_update(self.SetValue(param, value))  
 
     def update_PopupImage(self: Type['MainPanel'], param: _possible_PopupImage, value: Any):
-        self.on_update(self.ChangePopUpImage(param, value))  
+        self.on_update(self.ChangePopupImage(param, value))  
 
     def update_PopupForce(self: Type['MainPanel'], param: _possible_PopupForce, value: Any):
-        self.on_update(self.ChangePopUpForce(param, value))  
+        self.on_update(self.ChangePopupForce(param, value))  
 
     def on_update(self, str_update):
         if self.script:
