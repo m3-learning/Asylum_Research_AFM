@@ -1,6 +1,8 @@
+
 from typing import Any, Literal, Type
 import dataclasses as dc
 from src.core.Interface import AFM
+
 
 _possible_params = Literal["ScanSize",
     "PointLines",
