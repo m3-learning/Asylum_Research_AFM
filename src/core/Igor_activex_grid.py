@@ -48,21 +48,22 @@ def create_grid_params(param_list: List[str], param_dict:dict):
             if key in param_list:
                 grid_params[key] = value
         return grid_params
-grid_param_list = ['ScanSize', 'ScanRate', 'ScanSpeed', 'XOffset', 'YOffset', 'ScanAngle', 'FastRatio', 'SlowRatio', 'XLVDTSens', 'YLVDTSens', 'ZLVDTSens', 'XLVDTOffset', 'YLVDTOffset', 'ZLVDTOffset']
+    
 
-def create_grid(num_x_points:int, num_y_points:int, height:int, width:int, grid_params:dict):
-    # Define the cell size in x and y
-    x_cell_size = width / num_y_points
-    y_cell_size = height / num_x_points
+def grid_maker(num_x_grid_points: int, num_y_grid_points: int, grid_param_list):
 
-    # Create arrays of cell borders
-    x = np.arange(grid_params['XOffset'], width + grid_params['XOffset'], x_cell_size)
-    y = np.arange(grid_params['YOffset'], height + grid_params['YOffset'], y_cell_size)
+    # Create arrays of cell borders using linspace with the specified number of points
+    x = np.linspace(0, grid_param_list, num_x_grid_points)
+    y = np.linspace(0, grid_param_list, num_y_grid_points)
 
     # Create a grid
     X, Y = np.meshgrid(x, y)
 
     return X, Y
+
+#def spot_maker(made_grid):
+    #spot_maker
+
 
 
 if __name__ == "__main__":
@@ -70,10 +71,11 @@ if __name__ == "__main__":
     pass
 
 if __name__ == "__main__":
+    grid_param_list = ['ScanSize']
     my_grid_param = create_grid_params(grid_param_list, my_data)
     pass
 
 
 if __name__ == "__main__":
-    my_grid = create_grid(60,60,1,1,my_grid_param)
+    my_grid = grid_maker(60,60,my_grid_param['ScanSize'])
     pass

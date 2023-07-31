@@ -57,6 +57,12 @@ class MainPanel(AFM):
       
     def ChangePopupForce(self, variable, value):
         return f'PopupMenu {variable}Popup_1 mode={value}'
+    
+    def igor_spot_maker(self, image_posx,image_posy):
+        return f'ARGo2ImagePos({image_posx},{image_posy})'
+    
+    def draw_spot(self):
+        return f'DrawSpot(\"Draw\")'
 
     def update_params(self: Type['MainPanel'], param: _possible_params, value: Any):
         self.on_update(self.SetValue(param, value))  
@@ -66,6 +72,14 @@ class MainPanel(AFM):
 
     def update_PopupForce(self: Type['MainPanel'], param: _possible_PopupForce, value: Any):
         self.on_update(self.ChangePopupForce(param, value))  
+    
+    def update_spot(self: Type['MainPanel'], image_posx: Any, image_posy:Any):
+        self.on_update(self.igor_spot_maker(image_posx,image_posy)) 
+    
+    def draw_update(self: Type['MainPanel']):
+        self.on_update(self.draw_spot()) 
+
+
 
     def on_update(self, str_update):
         if self.script:
@@ -78,3 +92,15 @@ class MainPanel(AFM):
     # TODO add setter and return statement for command list
 
      
+
+if __name__ == "__main__":
+    basepath = r"C:\Users\Asylum User\Documents\code\junk"
+    afm = AFM(basepath=basepath)
+    main_panel = MainPanel() 
+    main_panel.update_spot(7e-6, 6e-6) 
+    main_panel.draw_update() 
+    main_panel.script = True 
+    print(main_panel.command_list)
+    afm.write_arcmd(main_panel.command_list)
+    afm.send_command()
+    pass
