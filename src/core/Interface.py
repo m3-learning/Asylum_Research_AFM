@@ -1,4 +1,7 @@
 from subprocess import Popen, TimeoutExpired
+from .igor_activex import get_wave_data
+from typing import List
+
 
 class AFM:
 
@@ -10,7 +13,6 @@ class AFM:
         self.arcmd = f"{self.cmd_basepath}\\\\{self.filename}.arcmd"
         self.verbose = verbose
         self.bat = f"{self.cmd_basepath}\\\\{self.filename}.bat"
-
         self.write_bat()
 
     @property
@@ -48,3 +50,14 @@ class AFM:
         
         if self.verbose:
             return outs, errs
+        
+    def get_params(self, param_list: List[str], wave_name: str, wave_folder: str):
+        param_dict = get_wave_data(wave_name, wave_folder)
+        params = {}
+        for key, value in param_dict.items():
+            if key in param_list:
+                params[key] = value
+        if len(param_list) == 1:
+            return params[param_list[0]]
+        else:
+            return params

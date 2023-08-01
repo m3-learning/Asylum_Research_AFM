@@ -1,8 +1,7 @@
 
 from typing import Any, Literal, Type
 import dataclasses as dc
-from src.core.Interface import AFM
-
+from ..core.Interface import AFM
 
 _possible_params = Literal["ScanSize",
     "PointLines",
@@ -45,7 +44,7 @@ _possible_params = Literal["ScanSize",
 _possible_PopupImage = Literal["ImagingMode", "LastScan"]
 
 _possible_PopupForce = Literal["DwellRampMode", "DwellSetting", "ImagingMode", "TriggerChannel", "SetSens"]
-
+force_spot = 'ForceSpotNumber'
 @dc.dataclass
 class MainPanel(AFM):
     command_list: list = dc.field(default_factory=list)
@@ -65,6 +64,12 @@ class MainPanel(AFM):
     
     def draw_spot(self):
         return f'DrawSpot(\"Draw\")'
+    
+    def change_force_spot(self, force_spot , value):
+        return f'PV(\"{force_spot}\", {value})'
+    
+    def go_to_spot(self):
+        return f'GoToSpot()'
 
     def update_params(self: Type['MainPanel'], param: _possible_params, value: Any):
         self.on_update(self.SetValue(param, value))  
@@ -81,6 +86,11 @@ class MainPanel(AFM):
     def draw_update(self: Type['MainPanel']):
         self.on_update(self.draw_spot()) 
 
+    def update_location(self: Type['MainPanel'], force_spot, value:Any ):
+        self.on_update(self.change_force_spot(force_spot,value)) 
+    
+    def move_location(self: Type['MainPanel']):
+        self.on_update(self.go_to_spot()) 
 
 
     def on_update(self, str_update):
@@ -94,15 +104,3 @@ class MainPanel(AFM):
     # TODO add setter and return statement for command list
 
      
-
-if __name__ == "__main__":
-    basepath = r"C:\Users\Asylum User\Documents\code\junk"
-    afm = AFM(basepath=basepath)
-    main_panel = MainPanel() 
-    main_panel.update_spot(7e-6, 6e-6) 
-    main_panel.draw_update() 
-    main_panel.script = True 
-    print(main_panel.command_list)
-    afm.write_arcmd(main_panel.command_list)
-    afm.send_command()
-    pass
