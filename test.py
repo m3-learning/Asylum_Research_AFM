@@ -6,9 +6,8 @@ if __name__ == "__main__":
     afm = AFM(basepath=basepath)
     main_panel = MainPanel() 
     main_panel.update_spot(7e-6, 6e-6) 
-    main_panel.draw_update() 
-    main_panel.change_force_spot(force_spot,1)
-    main_panel.go_to_spot()
+    main_panel.draw_update()
+    spotnumber = afm.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
     main_panel.script = True 
     print(main_panel.command_list)
     afm.write_arcmd(main_panel.command_list)
