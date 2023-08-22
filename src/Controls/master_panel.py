@@ -1,6 +1,8 @@
+
+from pathlib import Path
 from typing import Any, Literal, Type
 import dataclasses as dc
-from src.core.Interface import AFM
+from ..core.Interface import AFM
 
 _possible_params = Literal["ScanSize",
     "PointLines",
@@ -43,11 +45,19 @@ _possible_params = Literal["ScanSize",
 _possible_PopupImage = Literal["ImagingMode", "LastScan"]
 
 _possible_PopupForce = Literal["DwellRampMode", "DwellSetting", "ImagingMode", "TriggerChannel", "SetSens"]
+force_spot = 'ForceSpotNumber'
 
-@dc.dataclass
+
+# @dc.dataclass(kw_only=True)
 class MainPanel(AFM):
-    command_list: list = dc.field(default_factory=list)
-    script: bool = True
+
+    def __init__(self, script:bool=True, *args, **kwargs):
+        super().__init__( *args, **kwargs)
+        self.command_list = []
+        self.script = script
+#     command_list: list = dc.field(default_factory=list)
+#     script: bool = True
+
 
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
@@ -66,6 +76,7 @@ class MainPanel(AFM):
 
     def clear_spot(self):
         return f'DrawSpot(\"Clear\")'
+
 
     def change_force_spot(self, force_spot , value):
         return f'PV(\"{force_spot}\", {value})'
@@ -90,7 +101,7 @@ class MainPanel(AFM):
 
     def clear_update(self: Type['MainPanel']):
         self.on_update(self.clear_spot())
-
+      
     def update_location(self: Type['MainPanel'], force_spot, value:Any ):
         self.on_update(self.change_force_spot(force_spot,value))
 
@@ -105,6 +116,10 @@ class MainPanel(AFM):
             self.write_arcmd(str_update)
             self.send_command()
 
+    def execute(self):
+        self.write_arcmd(self.command_list)
+        self.send_command()
+        self.command_list = []
 
     # TODO add setter and return statement for command list
 
