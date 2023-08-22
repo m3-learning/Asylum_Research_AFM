@@ -82,9 +82,9 @@ class GridScan():
 #             self.numbered_grid.append({len(self.numbered_grid)+1, (X, Y)})
 #             time.sleep(sleep_time)
 
-#     def clean_up(self):
-#         self.main_panel.clear_update()
-#         self.main_panel.execute()
+    def clean_up(self):
+        self.main_panel.clear_update()
+        self.main_panel.execute()
 
 #     # Generator
 # [ measurement_object, spot number]
