@@ -55,6 +55,9 @@ class MainPanel(AFM):
         super().__init__( *args, **kwargs)
         self.command_list = []
         self.script = script
+#     command_list: list = dc.field(default_factory=list)
+#     script: bool = True
+
 
     def SetValue(self, variable, value):
         return f'PV(\"{variable}\",{value})'
@@ -70,6 +73,10 @@ class MainPanel(AFM):
 
     def draw_spot(self):
         return f'DrawSpot(\"Draw\")'
+
+    def clear_spot(self):
+        return f'DrawSpot(\"Clear\")'
+
 
     def change_force_spot(self, force_spot , value):
         return f'PV(\"{force_spot}\", {value})'
@@ -92,6 +99,9 @@ class MainPanel(AFM):
     def draw_update(self: Type['MainPanel']):
         self.on_update(self.draw_spot())
 
+    def clear_update(self: Type['MainPanel']):
+        self.on_update(self.clear_spot())
+      
     def update_location(self: Type['MainPanel'], force_spot, value:Any ):
         self.on_update(self.change_force_spot(force_spot,value))
 
@@ -112,5 +122,4 @@ class MainPanel(AFM):
         self.command_list = []
 
     # TODO add setter and return statement for command list
-
 
