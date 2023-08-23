@@ -60,27 +60,14 @@ class GridScan():
     def _create_force_spot(self, x: float, y: float) -> int:
         self.main_panel.update_spot(x,y)
         self.main_panel.draw_update()
-        self.main_panel.execute()
-        spotnumber = self.main_panel.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
-        return spotnumber
+        return (x, y)
 
 
     def create_grid_on_igor(self, sleep_time=0):
         self.numbered_grid = {}
-        for X, Y in self._raw_grid:
-            self.numbered_grid[int(self._create_force_spot(X,Y))] = (X, Y)
-            time.sleep(sleep_time)
-# =======
-#         #self.main_panel.execute()
-#         #spotnumber = self.main_panel.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
-#         #return spotnumber
-
-
-#     def create_grid_on_igor(self, sleep_time=0):
-#         for X, Y in self._raw_grid:
-#             self._create_force_spot(X,Y)
-#             self.numbered_grid.append({len(self.numbered_grid)+1, (X, Y)})
-#             time.sleep(sleep_time)
+        spot_start = self.main_panel.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
+        for ind, (x, y) in enumerate(self._raw_grid):
+            self.numbered_grid[int(spot_start+ ind)] = self._create_force_spot(x, y)
 
     def clean_up(self):
         self.main_panel.clear_update()
@@ -100,6 +87,3 @@ class GridScan():
 #     def dict_generator(list_):
 #         for list_ in list_:
 #             yield list_
-
-
-# >>>>>>> main
