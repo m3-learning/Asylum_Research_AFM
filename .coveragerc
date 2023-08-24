@@ -1,7 +1,7 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-source = Asylum_Research_AFM
+source = asylum_research_afm
 # omit = bad_file.py
 
 [paths]

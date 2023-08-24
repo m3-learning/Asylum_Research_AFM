@@ -21,7 +21,7 @@ class AFM:
 
     igor_path: Path = Path(r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe")
     basepath: Path = field(default_factory=lambda: Path(tempfile.mkdtemp()).absolute())
-    filename: str = 'ToIgor'
+    filename: str = "ToIgor"
     verbose: bool = False
     arcmd: Path = field(init=False)
     bat: Path = field(init=False)
@@ -30,8 +30,8 @@ class AFM:
         """
         Initialize paths and create BAT file.
         """
-        self.arcmd = self.basepath / f'{self.filename}.arcmd'
-        self.bat = self.basepath / f'{self.filename}.bat'
+        self.arcmd = self.basepath / f"{self.filename}.arcmd"
+        self.bat = self.basepath / f"{self.filename}.bat"
         self.write_bat()
 
     @property
@@ -47,19 +47,21 @@ class AFM:
         if isinstance(content, str):
             content = [content]
 
-        with open(file, 'w') as f:
+        with open(file, "w") as f:
             for line in content:
-                f.write(line + '\n')
+                f.write(line + "\n")
 
     def write_bat(self):
-        # arcmd = self.arcmd.replace("\\\\","\\")
-        content = f'@echo off\n\"{self.igor_path}\" \"{self.arcmd}\"'
-        self.write_file(self.bat, content)
+        """
+        write_bat writes a bat file that can run on the command line and send the command to igor
+        """
 
+        # arcmd = self.arcmd.replace("\\\\","\\")
+        content = f'@echo off\n"{self.igor_path}" "{self.arcmd}"'
+        self.write_file(self.bat, content)
 
     def write_arcmd(self, content):
         self.write_file(self.arcmd, content)
-
 
     def send_command(self):
         p = Popen(self.bat)
