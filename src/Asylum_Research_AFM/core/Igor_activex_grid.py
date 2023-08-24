@@ -2,7 +2,7 @@ import win32com.client as win32
 import pywintypes
 import numpy as np
 from typing import List
-from src.core.Interface import AFM
+from .Interface import AFM
 #from ..Controls import master_pane
 
 

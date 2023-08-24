@@ -3,7 +3,7 @@ import tempfile
 
 import numpy as np
 
-from ..core.Interface import AFM
+from ..Core.Interface import AFM
 from ..Controls.master_panel import MainPanel
 
 

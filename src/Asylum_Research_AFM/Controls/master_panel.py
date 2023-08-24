@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Any, Literal, Type
 import dataclasses as dc
-from ..core.Interface import AFM
+from ..Core.Interface import AFM
 
 _possible_params = Literal["ScanSize",
     "PointLines",
