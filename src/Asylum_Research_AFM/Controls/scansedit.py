@@ -7,16 +7,28 @@ from ..Core.Interface import AFM
 from .master_panel import MainPanel
 
 
-class GridScan():
-
-    def __init__(self, num_x_grid_points, num_y_grid_points, igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe", basepath=None, filename='ToIgor', verbose = False):
+class GridScan:
+    def __init__(
+        self,
+        num_x_grid_points,
+        num_y_grid_points,
+        igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe",
+        basepath=None,
+        filename="ToIgor",
+        verbose=False,
+    ):
 
         self.num_x_grid_points = num_x_grid_points
         self.num_y_grid_points = num_y_grid_points
-        self.main_panel = MainPanel(script=True, igor_path=igor_path, basepath=basepath, filename=filename, verbose=verbose)
+        self.main_panel = MainPanel(
+            script=True,
+            igor_path=igor_path,
+            basepath=basepath,
+            filename=filename,
+            verbose=verbose,
+        )
         self._raw_grid = ()
         self.numbered_grid: list[dict[int, tuple]] = []
-
 
     @property
     def num_x_grid_points(self):
@@ -36,10 +48,11 @@ class GridScan():
         if value is not None:
             self._num_y_grid_points = value
 
-
     def make_grid(self):
         self._raw_grid = None
-        scansize = self.main_panel.get_params(["ScanSize"], "MasterVariablesWave","root:packages:MFP3D:main:variables")
+        scansize = self.main_panel.get_params(
+            ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables"
+        )
 
         # Create arrays of cell borders using linspace with the specified number of points
         x = np.linspace(0, scansize, self.num_x_grid_points)
@@ -51,16 +64,15 @@ class GridScan():
         self._raw_grid = zip(X.flatten(), Y.flatten())
 
     def _create_force_spot(self, x: float, y: float) -> int:
-        self.main_panel.update_spot(x,y)
+        self.main_panel.update_spot(x, y)
         self.main_panel.draw_update()
-        #self.main_panel.execute()
-        #spotnumber = self.main_panel.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
-        #return spotnumber
-
+        # self.main_panel.execute()
+        # spotnumber = self.main_panel.get_params(["ForceSpotNumber"], "ForceVariablesWave","root:packages:MFP3D:main:variables")
+        # return spotnumber
 
     def create_grid_on_igor(self, sleep_time=0):
 
         for X, Y in self._raw_grid:
-            self.numbered_grid.append({int(len(self.numbered_grid)+1),  (X, Y)})
+            self.numbered_grid.append({int(len(self.numbered_grid) + 1), (X, Y)})
             time.sleep(sleep_time)
-        #self.main_panel.execute()
+        # self.main_panel.execute()

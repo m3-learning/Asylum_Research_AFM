@@ -10,7 +10,6 @@
 #     #spot_maker
 
 
-
 # if __name__ == "__main__":
 #     my_data = get_wave_data("MasterVariablesWave","root:packages:MFP3D:main:variables")
 #     pass

@@ -7,14 +7,26 @@ from ..Core.Interface import AFM
 from .master_panel import MainPanel
 
 
-class GridScan():
-
-    def __init__(self, num_x_grid_points, num_y_grid_points, igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe", basepath=None, filename='ToIgor', verbose=False):
+class GridScan:
+    def __init__(
+        self,
+        num_x_grid_points,
+        num_y_grid_points,
+        igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe",
+        basepath=None,
+        filename="ToIgor",
+        verbose=False,
+    ):
 
         self.num_x_grid_points = num_x_grid_points
         self.num_y_grid_points = num_y_grid_points
         self.main_panel = MainPanel(
-            script=True, igor_path=igor_path, basepath=basepath, filename=filename, verbose=verbose)
+            script=True,
+            igor_path=igor_path,
+            basepath=basepath,
+            filename=filename,
+            verbose=verbose,
+        )
         self._raw_grid = ()
         self.numbered_grid: dict[int, tuple] = {}
 
@@ -39,7 +51,8 @@ class GridScan():
     def make_grid(self):
         self._raw_grid = None
         scansize = self.main_panel.get_params(
-            ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+            ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables"
+        )
 
         # Create arrays of cell borders using linspace with the specified number of points
         x = np.linspace(0, scansize, self.num_x_grid_points)
@@ -58,7 +71,10 @@ class GridScan():
     def create_grid_on_igor(self, sleep_time=0):
         self.numbered_grid = {}
         spot_start = self.main_panel.get_params(
-            ["ForceSpotNumber"], "ForceVariablesWave", "root:packages:MFP3D:main:variables")
+            ["ForceSpotNumber"],
+            "ForceVariablesWave",
+            "root:packages:MFP3D:main:variables",
+        )
         for ind, (x, y) in enumerate(self._raw_grid):
             self.numbered_grid[int(spot_start + ind)] = self._create_force_spot(x, y)
 
