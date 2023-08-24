@@ -1,3 +1,3 @@
-from asylum_research_afm.Controls import master_panel
-from asylum_research_afm.Controls import scans
-from asylum_research_afm.Controls import scansedit
+from Asylum_Research_AFM.Controls import master_panel
+from Asylum_Research_AFM.Controls import scans
+from Asylum_Research_AFM.Controls import scansedit
