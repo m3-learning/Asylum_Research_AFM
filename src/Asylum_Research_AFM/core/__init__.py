@@ -1,1 +1,1 @@
-from asylum_research_afm.Core import Interface
+from Asylum_Research_AFM.Core import Interface
