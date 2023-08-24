@@ -8,22 +8,32 @@ def PointLines(self, value):
     self.on_update(string_command)
 
 def ScanRate(self, value):
+    """Set the AFM Scan rate in Hz"""
     string_command = self.SetValue("ScanRate", value)
     self.on_update(string_command)
 
 def AmplitudeSetpointVolts(self, value):
+    """Sets the amplitude setpoint in volts"""
     string_command = self.SetValue("AmplitudeSetpointVolts", value)
     self.on_update(string_command)
 
 def DriveAmplitude(self, value):
+    """Sets the amplitude of the drive in volts"""
     string_command = self.SetValue("DriveAmplitude", value)
     self.on_update(string_command)
 
 def DriveFrequency(self, value):
+    """Sets the frequency of the drive in Hz"""
     string_command = self.SetValue("DriveFrequency", value)
     self.on_update(string_command)
 
 def IntegralGain(self, value):
+    """
+    IntegralGain sets the integral gain for the feedback loop.
+
+    Args:
+        value (float): value for the integral gain
+    """
     string_command = self.SetValue("IntegralGain", value)
     self.on_update(string_command)
 

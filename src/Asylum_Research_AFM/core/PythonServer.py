@@ -1,80 +1,74 @@
-import socket
+# import socket
+
+# # Define the server's host and port
+# HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+# PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
 
 
 
-# Define the server's host and port
-
-HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-
-PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
+# def print_hello_world():
+#     print('Hello, World!')
 
 
 
 
-def print_hello_world():
+# # Create a new socket using the AF_INET address family (Internet) and SOCK_STREAM socket type (TCP)
 
-    print('Hello, World!')
+# with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
+#     # Bind the socket to the address and port
 
-
-
-# Create a new socket using the AF_INET address family (Internet) and SOCK_STREAM socket type (TCP)
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-
-    # Bind the socket to the address and port
-
-    s.bind((HOST, PORT))
+#     s.bind((HOST, PORT))
 
 
 
 
-    # Start listening for connections
+#     # Start listening for connections
 
-    s.listen()
-
-
-
-
-    print(f'Server started at {HOST}:{PORT}. Waiting for connection...')
+#     s.listen()
 
 
 
 
-    # Accept a connection
-
-    while True:
-
-        conn, addr = s.accept()
+#     print(f'Server started at {HOST}:{PORT}. Waiting for connection...')
 
 
 
 
-        with conn:
+#     # Accept a connection
 
-            print('Connected by', addr)
+#     while True:
 
-
-
-
-            while True:
-
-                # Receive the command
-
-                data = conn.recv(1024)
+#         conn, addr = s.accept()
 
 
 
 
-                if not data:
+#         with conn:
 
-                    break
-
-
+#             print('Connected by', addr)
 
 
-                # Here we ignore the received command and simply run our function
 
-                print_hello_world()
+
+#             while True:
+
+#                 # Receive the command
+
+#                 data = conn.recv(1024)
+
+
+
+
+#                 if not data:
+
+#                     break
+
+
+
+
+#                 # Here we ignore the received command and simply run our function
+
+#                 print_hello_world()
                 

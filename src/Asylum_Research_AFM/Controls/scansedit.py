@@ -3,8 +3,8 @@ import tempfile
 
 import numpy as np
 
-from ..core.Interface import AFM
-from ..Controls.master_panel import MainPanel
+from ..Core.Interface import AFM
+from .master_panel import MainPanel
 
 
 class GridScan():
