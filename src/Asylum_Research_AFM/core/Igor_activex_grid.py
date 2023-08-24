@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-import win32com.client as win32
-import pywintypes
-import numpy as np
-from typing import List
-from .Interface import AFM
-#from ..Controls import master_pane
-=======
 # import win32com.client as win32
 # import pywintypes
 # import numpy as np
 # from typing import List
 # from src.core.Interface import AFM
 # #from ..Controls import master_pane
->>>>>>> 28172955245827094e3ecc14bb5535ab2a63104d
 
 
 # #def spot_maker(made_grid):
