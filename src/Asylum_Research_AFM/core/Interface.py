@@ -52,6 +52,10 @@ class AFM:
                 f.write(line + '\n')
 
     def write_bat(self):
+        """
+        write_bat writes a bat file that can run on the command line and send the command to igor
+        """
+        
         # arcmd = self.arcmd.replace("\\\\","\\")
         content = f'@echo off\n\"{self.igor_path}\" \"{self.arcmd}\"'
         self.write_file(self.bat, content)
