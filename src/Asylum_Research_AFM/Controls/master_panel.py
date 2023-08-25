@@ -63,7 +63,6 @@ force_spot = "ForceSpotNumber"
 #     #     script: bool = True
 
 
-@dataclass(init=False)
 class MasterPanel(AFM):
     """
     MasterPanel API to set the master panel properties
@@ -72,14 +71,10 @@ class MasterPanel(AFM):
         AFM (obj): AFM class that contains the connection to the microscope
     """
 
-    command_list: List = field(default_factory=list)
-    script: bool = True
-
-    def __post_init__(self, *args, **kwargs):
-        """
-        __post_init__ initializes the class and inherits the AFM class
-        """
+    def __init__(self, script: bool = True, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.command_list = []
+        self.script = script
 
     def SetValue(self, variable, value):
         """
@@ -143,7 +138,7 @@ class MasterPanel(AFM):
             str: string command to send to igor
         """
 
-        return f'DrawSpot("Draw")'
+        return r'DrawSpot("Draw")'
 
     def clear_spot(self):
         """
@@ -153,7 +148,7 @@ class MasterPanel(AFM):
             str: string command to send to igor
         """
 
-        return f'DrawSpot("Clear")'
+        return r'DrawSpot("Clear")'
 
     def change_force_spot(self, force_spot, value):
         """
@@ -175,52 +170,81 @@ class MasterPanel(AFM):
         Returns:
             str: string command to send to igor
         """
-        return f"GoToSpot()"
+        return r"GoToSpot()"
+    def change_variable_max(self, variable, value):
+        """change_variable_max Sets a max value within igor
 
-    def update_params(self: Type["MainPanel"], param: _possible_params, value: Any):
+        Args:
+            variable (_type_):  name of the variable to change
+            value (_type_): value to change the variable's max to
+
+          Returns:
+           str: string command to send to igor
+        """
+        return f'PVH("{variable}","{value}")'
+    def td_setramp(self, xpos, ypos, max_time=0.15):
+        """
+        td_setramp moves cantilever to the spot in igor
+
+        Returns:
+            str: string command to send to igor
+        """
+        
+        return f'td_SetRamp({max_time},"PIDSloop.0.Setpoint",0, {xpos},"PIDSloop.1.Setpoint",0, {ypos} ,"",0,0,"")'
+        
+    def show_tip(self):
+        return r'CheckBox ShowXYSpotCheck_1 value=1'
+
+
+    def update_params(self: Type["MasterPanel"], param: _possible_params, value: Any):
         """
         update_params updates a parameter in igor
 
         Args:
-            self (Type[&quot;MainPanel&quot;]): MainPanel class
+            self (Type['MasterPanel']): MasterPanel class
             param (_possible_params): parm from list of possible params
             value (Any): value to change the parameter to
         """
 
         self.on_update(self.SetValue(param, value))
 
-    def update_PopupImage(
-        self: Type["MainPanel"], param: _possible_PopupImage, value: Any
-    ):
+    def update_PopupImage(self: Type["MasterPanel"], param: _possible_PopupImage, value: Any):
         """
         update_PopupImage Updates the popup image in igor
 
         Args:
-            self (Type[&quot;MainPanel&quot;]): MainPanel class
+            self (Type['MasterPanel']): MasterPanel class
             param (_possible_PopupImage): possible popup images to change
             value (Any): value to change the popup image to
         """
         self.on_update(self.ChangePopupImage(param, value))
 
-    def update_PopupForce(
-        self: Type["MainPanel"], param: _possible_PopupForce, value: Any
-    ):
+    def update_PopupForce(self: Type["MasterPanel"], param: _possible_PopupForce, value: Any):
         self.on_update(self.ChangePopupForce(param, value))
 
-    def update_spot(self: Type["MainPanel"], image_posx: Any, image_posy: Any):
+    def update_spot(self: Type["MasterPanel"], image_posx: Any, image_posy: Any):
         self.on_update(self.igor_spot_maker(image_posx, image_posy))
 
-    def draw_update(self: Type["MainPanel"]):
+    def draw_update(self: Type["MasterPanel"]):
         self.on_update(self.draw_spot())
 
-    def clear_update(self: Type["MainPanel"]):
+    def clear_update(self: Type["MasterPanel"]):
         self.on_update(self.clear_spot())
 
-    def update_location(self: Type["MainPanel"], force_spot, value: Any):
+    def update_location(self: Type["MasterPanel"], force_spot, value: Any):
         self.on_update(self.change_force_spot(force_spot, value))
 
-    def move_location(self: Type["MainPanel"]):
+    def move_location(self: Type["MasterPanel"]):
         self.on_update(self.go_to_spot())
+    
+    def variable_max_update(self: Type["MasterPanel"], variable, value:Any):
+        self.on_update(self.change_variable_max(variable, value))
+    
+    def td_update_move(self: Type["MasterPanel"], xpos: Any, ypos:Any, max_time=0.15):
+        self.on_update(self.td_setramp(xpos, ypos, max_time))
+        
+    def show_update(self: Type["MasterPanel"]):
+        self.on_update(self.show_tip())
 
     def on_update(self, str_update):
         if self.script:
@@ -233,3 +257,16 @@ class MasterPanel(AFM):
         self.write_arcmd(self.command_list)
         self.send_command()
         self.command_list = []
+
+
+if __name__ == "__main__":
+   # Create an instance of MasterPanel
+    try:
+        master_panel_instance = MasterPanel()
+    except:
+        pass
+        # Test the show_update method
+    master_panel_instance.show_update()
+        # Test the execute method
+    master_panel_instance.execute()
+
