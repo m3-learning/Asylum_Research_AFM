@@ -4,7 +4,7 @@ import tempfile
 import numpy as np
 
 from ..Core.Interface import AFM
-from .master_panel import MainPanel
+from .master_panel import MasterPanel
 
 
 class GridScan:
@@ -20,12 +20,12 @@ class GridScan:
 
         self.num_x_grid_points = num_x_grid_points
         self.num_y_grid_points = num_y_grid_points
-        self.main_panel = MainPanel(
+        self.main_panel = MasterPanel(
             script=True,
             igor_path=igor_path,
             filename=filename,
             verbose=verbose,
-            **kwargs
+            **kwargs,
         )
         self._raw_grid = ()
         self.numbered_grid: dict[int, tuple] = {}
