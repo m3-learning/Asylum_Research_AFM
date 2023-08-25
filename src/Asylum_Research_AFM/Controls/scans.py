@@ -81,3 +81,14 @@ class GridScan:
     def clean_up(self):
         self.main_panel.clear_update()
         self.main_panel.execute()
+
+    def mover_grid(self):
+
+        
+
+        xoffset = self.main_panel.get_params(["XOffset"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+        yoffset = self.main_panel.get_params(["YOffset"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+        xlvdtsens = self.main_panel.get_params(["XLVDTSens"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+        xlvdtoffset = self.main_panel.get_params(["XLVDTOffset"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+        ylvdtsens = self.main_panel.get_params(["YLVDTSens"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
+        ylvdtoffset = self.main_panel.get_params(["YLVDTOffset"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")
