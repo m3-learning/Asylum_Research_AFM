@@ -13,9 +13,9 @@ class GridScan:
         num_x_grid_points,
         num_y_grid_points,
         igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe",
-        basepath=None,
         filename="ToIgor",
         verbose=False,
+        **kwargs,
     ):
 
         self.num_x_grid_points = num_x_grid_points
@@ -23,9 +23,9 @@ class GridScan:
         self.main_panel = MainPanel(
             script=True,
             igor_path=igor_path,
-            basepath=basepath,
             filename=filename,
             verbose=verbose,
+            **kwargs
         )
         self._raw_grid = ()
         self.numbered_grid: dict[int, tuple] = {}
