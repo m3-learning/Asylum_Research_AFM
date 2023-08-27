@@ -146,3 +146,5 @@ class GridScan:
         # Transposing the matrices
         XLocVMat = XLocVMat.T
         YLocVMat = YLocVMat.T
+
+        self.grid_loc = (XLocVMat, YLocVMat)
