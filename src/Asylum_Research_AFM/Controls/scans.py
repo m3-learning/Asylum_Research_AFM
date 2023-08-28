@@ -24,6 +24,7 @@ class GridScan:
         self.masterpanel = MasterPanel(script=True, igor_path=igor_path, filename=filename, verbose=verbose)
         self._raw_grid = ()
         self.numbered_grid: dict[int, tuple] = {}
+        self.grid_loc = ()
 
     @property
     def numXgridpoints(self):
@@ -43,39 +44,86 @@ class GridScan:
         if value is not None:
             self._numYgridpoints = value
 
-    # def make_grid(self, dimensions = True):
-    #     #TODO fix for different aspect ratio
+    def make_grid(self, dimensions = True):
+        """ 
+        if you want to make a grid using markers run this in order to create and array of x and y points that will be returned in _raw_grid that will be 
+        calculated using numXgridpoints, numYgridpoints, and the scan size which is pulled using get_params, to run this function ensure that GridScan 
+        was intialized with values for numXgridpoints and numYgridpoints
+
+        Args:
+            dimensions (bool, optional): _description_. Defaults to True.
+        """
+        #TODO fix for different aspect ratio
         
-    #     self._raw_grid = None
+        self._raw_grid = None
 
-    #     if dimensions:
-    #         scansize = self.masterpanel.get_params(
-    #             ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables"
-    #         )
-    #     else:
-    #         scansize = self.numXgridpoints
+        if dimensions:
+            scansize = self.masterpanel.get_params(
+                ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables"
+            )
+        else:
+            scansize = self.numXgridpoints
 
-    #     # Create arrays of cell borders using linspace with the specified number of points
-    #     x = np.linspace(0, scansize, self.numXgridpoints)
-    #     y = np.linspace(0, scansize, self.numYgridpoints)
+        # Create arrays of cell borders using linspace with the specified number of points
+        x = np.linspace(0, scansize, self.numXgridpoints)
+        y = np.linspace(0, scansize, self.numYgridpoints)
 
-    #     # Create a grid
-    #     X, Y = np.meshgrid(x, y)
+        # Create a grid
+        X, Y = np.meshgrid(x, y)
 
-    #     self._raw_grid = zip(X.flatten(), Y.flatten())
+        self._raw_grid = zip(X.flatten(), Y.flatten())
 
     def _create_force_spot(self, x: float, y: float) -> int:
+        """
+        creates the commands send to the command list to igor in order send the marker to the specified position and create a marked spot there 
+
+        Args:
+            x (float): the x postition that you want to create a marked spot on 
+            y (float): the y postition that you want to create a marked spot on 
+
+        Returns:
+            int:the position where the maked spot will be made  
+        """
         self.masterpanel.update_spot(x, y)
         self.masterpanel.draw_update()
         return (x, y)
     
+    def max_spot_value(self):
+        """
+        max_spot_value takes the number of x and y grid points that were inputted at initalization and multiplies them together and adds 10 and assigns that 
+        value to the Force Spot Number Max so if you want to create the grid using markers go_to_spot will actually be able to move to any spot number
+
+
+        Returns:
+            _type_: print statement letting you know that it is changed
+        """
+        Spot_Number = "ForceSpotNumber"
+        max_val_needed = (self.numXgridpoints * self.numYgridpoints) + 10
+        self.masterpanel.variable_max_update(Spot_Number, max_val_needed)
+        self.masterpanel.execute()
+        return (f'Max Spot number has been updated to {max_val_needed}') 
+    
     def checkbox(self):
-        self.masterpanel.show_update()
+        """
+        ensures that the checkbox for whether or not the tip location shows is checked 
+
+        Returns:
+            _type_: print statement letting you know that it is checked 
+        """
+        self.masterpanel.show_tip_update()
         self.masterpanel.execute()
         return ("It has been checked")
     
 
     def create_grid_on_igor(self, sleep_time=0):
+        """ 
+        if you are using the marked point method, this takes the values from _raw_grid and numbers each x an y value assigns that to the numbered_grid 
+        dictionary and then runs through the dictionary and creates the igor statement that will move the cursor and mark the point for each x and y value, 
+        to actually send the points  
+
+        Args:
+            sleep_time (int, optional): _description_. Defaults to 0.
+        """
         self.numbered_grid = {}
         spot_start = self.masterpanel.get_params(
             ["ForceSpotNumber"],
@@ -86,10 +134,28 @@ class GridScan:
             self.numbered_grid[int(spot_start + ind)] = self._create_force_spot(x, y)
 
     def clean_up(self):
+        """
+        sends a command to igor that cleans off any marks created using _create_force_spot
+        """
         self.masterpanel.clear_update()
         self.masterpanel.execute()
 
     def lvdt_grid(self):
+        """
+        Generate a grid of locations for scanning based on device parameters and dimensions.
+
+        This method calculates a grid of scanning locations for a scanning device based on the device's parameters,
+        including scan size, offsets, ratios, and scan angle. The grid is rotated and transformed according to the parameters
+        to ensure accurate mapping of physical locations to measurement points.
+
+        Args:
+            dimensions (bool, optional): Whether to include dimensions. If True, the dimensions of the grid will be returned.
+                                        Defaults to False.
+
+        Returns:
+            tuple or None: If dimensions is True, returns a tuple containing the X and Y dimensions of the generated grid.
+                            If dimensions is False (default), sets the 'grid_loc' attribute of the object to the generated grid.
+        """
         self.make_grid(dimensions=False)
 
         scansize = self.masterpanel.get_params(["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables")

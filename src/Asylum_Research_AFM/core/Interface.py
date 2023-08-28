@@ -75,6 +75,19 @@ class AFM:
             return outs, errs
 
     def get_params(self, param_list: List[str], wave_name: str, wave_folder: str):
+        """It pulls the specific wave Parameters from the local Igor pro application using the get_wave_data function
+    NOTE: can only be run on windows on the same machine as the igor application
+    Igor must be properly set up for activeX control
+    Note: This function presumes you already have the igor application open and running and have already selected the experiment type
+
+    Args:
+        param_list (str): name of the specfic parameters you would like to pull from the wave (not Case sensitive)
+        wave_name (str): name of the specfic wave you are trying to access (Case sensitive)
+        wave_folder (str): colon sperated folder path directly from the igor application (not case sensitive)
+
+    Returns:
+        dict[str,float]: Parameters of Scan/Wave
+    """
         param_dict = get_wave_data(wave_name, wave_folder)
         params = {}
         for key, value in param_dict.items():
