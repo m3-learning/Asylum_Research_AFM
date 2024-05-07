@@ -2,7 +2,7 @@ from subprocess import Popen, TimeoutExpired
 import tempfile
 from pathlib import Path
 from typing import List
-from .igor_activex import get_wave_data
+from igor_activex import get_wave_data
 from dataclasses import dataclass, field
 
 
@@ -20,7 +20,7 @@ class AFM:
     """
 
     igor_path: Path = Path(r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe")
-    basepath: Path = field(default_factory=lambda: Path(tempfile.mkdtemp()).absolute())
+    basepath: Path = field(default_factory= Path(tempfile.mkdtemp()).absolute())
     filename: str = 'ToIgor'
     verbose: bool = False
     arcmd: Path = field(init=False)

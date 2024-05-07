@@ -2,7 +2,14 @@ import win32com.client as win32
 import pywintypes
 import numpy as np
 from typing import List
-from src.core.Interface import AFM
+from Interface import AFM
+from igor_activex import get_wave_data
+
+# import sys
+# sys.path.append("c:\\Users\\Asylum User\\Documents\\Code\\Asylum_Research_AFM\\Asylum_Research_AFM\\src\\Asylum_Research_AFM\\core")
+#sys.path.append("c:\\Users\\Asylum User\\Documents\\Code\\Asylum_Research_AFM\\Asylum_Research_AFM\\src\\Asylum_Research_AFM\\Controls")
+
+#from Interface import AFM
 #from ..Controls import master_pane
 
 
