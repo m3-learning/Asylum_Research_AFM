@@ -34,7 +34,7 @@ except ImportError:
     from sphinx import apidoc
 
 output_dir = os.path.join(__location__, "api")
-module_dir = os.path.join(__location__, "../src/Asylum_Research_AFM")
+module_dir = os.path.join(__location__, "../src/asylum_research_afm")
 try:
     shutil.rmtree(output_dir)
 except FileNotFoundError:
@@ -88,7 +88,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "Asylum_Research_AFM"
-copyright = "2023, Yael Passy"
+copyright = "2023, Joshua C Agar, Yael Passy"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -99,7 +99,7 @@ copyright = "2023, Yael Passy"
 # If you don’t need the separation provided between version and release,
 # just set them both to the same value.
 try:
-    from Asylum_Research_AFM import __version__ as version
+    from asylum_research_afm import __version__ as version
 except ImportError:
     version = ""
 
@@ -158,10 +158,7 @@ html_theme = "sphinx_rtd_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    "sidebar_width": "300px",
-    "page_width": "1200px"
-}
+html_theme_options = {"sidebar_width": "300px", "page_width": "1200px"}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -246,7 +243,13 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "user_guide.tex", "Asylum_Research_AFM Documentation", "Yael Passy", "manual")
+    (
+        "index",
+        "user_guide.tex",
+        "Asylum_Research_AFM Documentation",
+        "Joshua C Agar",
+        "manual",
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

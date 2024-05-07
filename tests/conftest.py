@@ -1,5 +1,5 @@
 """
-    Dummy conftest.py for Asylum_Research_AFM.
+    Dummy conftest.py for asylum_research_afm.
 
     If you don't know what this is for, just leave it empty.
     Read more about conftest.py under:

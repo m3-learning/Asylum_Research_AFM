@@ -22,32 +22,68 @@ class GridScan:
         script = True, 
         verbose=False,
     ):
+class GridScan:
+    
+    def __init__(
+        self,
+        numXgridpoints,
+        numYgridpoints,
+        igor_path=r"C:\AsylumResearch\v19\RealTime\Igor Pro Folder\Igor.exe",
+        filename="ToIgor",
+        script = True, 
+        verbose=False,
+    ):
 
+        self.numXgridpoints = numXgridpoints
+        self.numYgridpoints = numYgridpoints
+        self.masterpanel = MasterPanel(script=True, igor_path=igor_path, filename=filename, verbose=verbose)
         self.numXgridpoints = numXgridpoints
         self.numYgridpoints = numYgridpoints
         self.masterpanel = MasterPanel(script=True, igor_path=igor_path, filename=filename, verbose=verbose)
         self._raw_grid = ()
         self.numbered_grid: dict[int, tuple] = {}
         self.grid_loc = ()
+        self.grid_loc = ()
 
     @property
+    def numXgridpoints(self):
+        return self._numXgridpoints
     def numXgridpoints(self):
         return self._numXgridpoints
 
     @numXgridpoints.setter
     def numXgridpoints(self, value):
+    @numXgridpoints.setter
+    def numXgridpoints(self, value):
         if value is not None:
+            self._numXgridpoints = value
             self._numXgridpoints = value
 
     @property
     def numYgridpoints(self):
         return self._numYgridpoints
+    def numYgridpoints(self):
+        return self._numYgridpoints
 
+    @numYgridpoints.setter
+    def numYgridpoints(self, value):
     @numYgridpoints.setter
     def numYgridpoints(self, value):
         if value is not None:
             self._numYgridpoints = value
+            self._numYgridpoints = value
 
+    def make_grid(self, dimensions = True):
+        """ 
+        if you want to make a grid using markers run this in order to create and array of x and y points that will be returned in _raw_grid that will be 
+        calculated using numXgridpoints, numYgridpoints, and the scan size which is pulled using get_params, to run this function ensure that GridScan 
+        was intialized with values for numXgridpoints and numYgridpoints
+
+        Args:
+            dimensions (bool, optional): _description_. Defaults to True.
+        """
+        #TODO fix for different aspect ratio
+        
     def make_grid(self, dimensions = True):
         """ 
         if you want to make a grid using markers run this in order to create and array of x and y points that will be returned in _raw_grid that will be 
@@ -68,7 +104,16 @@ class GridScan:
         else:
             scansize = self.numXgridpoints
 
+        if dimensions:
+            scansize = self.masterpanel.get_params(
+                ["ScanSize"], "MasterVariablesWave", "root:packages:MFP3D:main:variables"
+            )
+        else:
+            scansize = self.numXgridpoints
+
         # Create arrays of cell borders using linspace with the specified number of points
+        x = np.linspace(0, scansize, self.numXgridpoints)
+        y = np.linspace(0, scansize, self.numYgridpoints)
         x = np.linspace(0, scansize, self.numXgridpoints)
         y = np.linspace(0, scansize, self.numYgridpoints)
 
@@ -78,6 +123,18 @@ class GridScan:
         self._raw_grid = zip(X.flatten(), Y.flatten())
 
     def _create_force_spot(self, x: float, y: float) -> int:
+        """
+        creates the commands send to the command list to igor in order send the marker to the specified position and create a marked spot there 
+
+        Args:
+            x (float): the x postition that you want to create a marked spot on 
+            y (float): the y postition that you want to create a marked spot on 
+
+        Returns:
+            int:the position where the maked spot will be made  
+        """
+        self.masterpanel.update_spot(x, y)
+        self.masterpanel.draw_update()
         """
         creates the commands send to the command list to igor in order send the marker to the specified position and create a marked spot there 
 
@@ -118,8 +175,43 @@ class GridScan:
         self.masterpanel.execute()
         return ("It has been checked")
     
+    
+    def max_spot_value(self):
+        """
+        max_spot_value takes the number of x and y grid points that were inputted at initalization and multiplies them together and adds 10 and assigns that 
+        value to the Force Spot Number Max so if you want to create the grid using markers go_to_spot will actually be able to move to any spot number
+
+
+        Returns:
+            _type_: print statement letting you know that it is changed
+        """
+        Spot_Number = "ForceSpotNumber"
+        max_val_needed = (self.numXgridpoints * self.numYgridpoints) + 10
+        self.masterpanel.variable_max_update(Spot_Number, max_val_needed)
+        self.masterpanel.execute()
+        return (f'Max Spot number has been updated to {max_val_needed}') 
+    
+    def checkbox(self):
+        """
+        ensures that the checkbox for whether or not the tip location shows is checked 
+
+        Returns:
+            _type_: print statement letting you know that it is checked 
+        """
+        self.masterpanel.show_tip_update()
+        self.masterpanel.execute()
+        return ("It has been checked")
+    
 
     def create_grid_on_igor(self, sleep_time=0):
+        """ 
+        if you are using the marked point method, this takes the values from _raw_grid and numbers each x an y value assigns that to the numbered_grid 
+        dictionary and then runs through the dictionary and creates the igor statement that will move the cursor and mark the point for each x and y value, 
+        to actually send the points  
+
+        Args:
+            sleep_time (int, optional): _description_. Defaults to 0.
+        """
         """ 
         if you are using the marked point method, this takes the values from _raw_grid and numbers each x an y value assigns that to the numbered_grid 
         dictionary and then runs through the dictionary and creates the igor statement that will move the cursor and mark the point for each x and y value, 
@@ -134,7 +226,13 @@ class GridScan:
             "ForceVariablesWave",
             "root:packages:MFP3D:main:variables",
         )
+        spot_start = self.masterpanel.get_params(
+            ["ForceSpotNumber"],
+            "ForceVariablesWave",
+            "root:packages:MFP3D:main:variables",
+        )
         for ind, (x, y) in enumerate(self._raw_grid):
+            self.numbered_grid[int(spot_start + ind)] = self._create_force_spot(x, y)
             self.numbered_grid[int(spot_start + ind)] = self._create_force_spot(x, y)
 
     def clean_up(self):

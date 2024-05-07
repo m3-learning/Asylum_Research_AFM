@@ -26,19 +26,22 @@
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
     :target: https://pyscaffold.org/
-
-|
+.. image:: https://readthedocs.org/projects/Asylum_Research_AFM/badge/?version=latest
+        :alt: ReadTheDocs
+        :target: https://Asylum_Research_AFM.readthedocs.io/en/stable/
+.. image:: https://pepy.tech/badge/Asylum_Research_AFM/month
+        :alt: Monthly Downloads
+        :target: https://pepy.tech/project/Asylum_Research_AFM
+.. image:: https://img.shields.io/pypi/v/Asylum_Research_AFM.svg
+    :alt: PyPI-Server
+    :target: https://pypi.org/project/Asylum_Research_AFM/
 
 ===================
 Asylum_Research_AFM
 ===================
 
 
-    Add a short description here!
-
-
-A longer description of your project goes here...
-
+    Asylum_Research_AFM provide a flexible api for designing experiments on an Oxford Instruments Asylum Research AFM.
 
 .. _pyscaffold-notes:
 
