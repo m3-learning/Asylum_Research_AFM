@@ -3,13 +3,7 @@ from typing import Any, Literal, Type, Union
 from dataclasses import dataclass, field
 from typing import List
 from Asylum_Research_AFM.Core.Interface import AFM
-from typing import Any, Literal, Type, Union
-from dataclasses import dataclass, field
-from typing import List
-from Asylum_Research_AFM.Core.Interface import AFM
 
-_possible_params = Literal[
-    "ScanSize",
 _possible_params = Literal[
     "ScanSize",
     "PointLines",
@@ -50,12 +44,7 @@ _possible_params = Literal[
     "FMapScanLines",
     "FMapBaseSuffix",
 ]
-_possible_PopupImage = Literal["ImagingMode", "LastScan"] 
-""" Imaging Mode options:  1-Contact, 2-AC Mode, 3-FM Mode, 4-PFM Mode, 5-Fast Force Map, 6-AC Fast Force Map, 7-FM Fast Force Map
-    Last Scan options: 1-Continous Mode, 2-One Frame Mode
-"""
-    "FMapBaseSuffix",
-]
+
 _possible_PopupImage = Literal["ImagingMode", "LastScan"] 
 """ Imaging Mode options:  1-Contact, 2-AC Mode, 3-FM Mode, 4-PFM Mode, 5-Fast Force Map, 6-AC Fast Force Map, 7-FM Fast Force Map
     Last Scan options: 1-Continous Mode, 2-One Frame Mode
@@ -71,6 +60,7 @@ _possible_PopupForce = Literal["DwellRampMode", "DwellSetting", "ImagingMode", "
     26-BackPackIn3Volts, 27-BackPackIn4, 28-BackPackIn4Volts, 29-Frequency, 30-Count, 31-Drive, 32-DriveVolts
     Set Sensitivity options: 1-Defl InvOLS, 2-Amp InvOLS   
     """
+    
 force_spot = "ForceSpotNumber"
 """ 
     Dwell Ramp Mode options: 1-Deflection, 2-ZSensor, 3-Other[Indentation]
@@ -83,39 +73,6 @@ force_spot = "ForceSpotNumber"
     Set Sensitivity options: 1-Defl InvOLS, 2-Amp InvOLS   
     """
 force_spot = "ForceSpotNumber"
-
-
-# # @dc.dataclass(kw_only=True)
-# class MainPanel(AFM):
-#     def __init__(self, script: bool = True, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.command_list = []
-#         self.script = script
-
-#     #     command_list: list = dc.field(default_factory=list)
-#     #     script: bool = True
-
-
-class MasterPanel(AFM):
-    """
-    MasterPanel API to set the master panel properties
-
-    Args:
-        AFM (obj): AFM class that contains the connection to the microscope
-    """
-
-    def __init__(self, script: bool = True, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-# # @dc.dataclass(kw_only=True)
-# class MainPanel(AFM):
-#     def __init__(self, script: bool = True, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.command_list = []
-#         self.script = script
-
-#     #     command_list: list = dc.field(default_factory=list)
-#     #     script: bool = True
-
 
 class MasterPanel(AFM):
     """
@@ -142,31 +99,8 @@ class MasterPanel(AFM):
             str: string command to send to igor
         """
         return f'PV("{variable}",{value})'
-        """
-        SetValue Sets a value within igor
-
-        Args:
-            variable (str): name of the variable to change, NOTE:must be exactly how it is found in igor (case sensitive)
-            value (int): value to change the variable to
-
-        Returns:
-            str: string command to send to igor
-        """
-        return f'PV("{variable}",{value})'
 
     def ChangePopupImage(self, variable, value):
-        """
-        ChangePopupImage changes the setting of a popup menu for an image parameter in igor
-
-        Args:
-            variable (str): image popup menu variable to change
-            value (int): (which choice) value to change the menu (options above)
-
-        Returns:
-            str: string command to send to igor
-        """
-
-        return f"PopupMenu {variable}Popup_0 mode={value}"
         """
         ChangePopupImage changes the setting of a popup menu for an image parameter in igor
 
@@ -193,18 +127,6 @@ class MasterPanel(AFM):
         """
 
         return f"PopupMenu {variable}Popup_1 mode={value}"
-        """
-        ChangePopupForce Changes the setting of a popup menu for a force parameter in igor
-
-        Args:
-            variable (str): force popup menu to change
-            value (int): value to change the menu to(options above)
-
-        Returns:
-            str: string command to send to igor
-        """
-
-        return f"PopupMenu {variable}Popup_1 mode={value}"
 
     def go_to_image_spot(self, image_posx, image_posy):
         """
@@ -218,18 +140,7 @@ class MasterPanel(AFM):
             str: string command to send to igor
         """
         return f"ARGo2ImagePos({image_posx},{image_posy})"
-    def go_to_image_spot(self, image_posx, image_posy):
-        """
-        go_to_image_spot sends the image cursor to the inputted spot in igor
-
-        Args:
-            image_posx (float): image position x
-            image_posy (float): image position y
-
-        Returns:
-            str: string command to send to igor
-        """
-        return f"ARGo2ImagePos({image_posx},{image_posy})"
+    
 
     def draw_spot(self):
         """
@@ -240,14 +151,7 @@ class MasterPanel(AFM):
         """
 
         return r'DrawSpot("Draw")'
-        """
-        draw_spot draws a spot marker on an image in igor
 
-        Returns:
-            str: string command to send to igor
-        """
-
-        return r'DrawSpot("Draw")'
 
     def clear_spot(self):
         """
@@ -258,14 +162,7 @@ class MasterPanel(AFM):
         """
 
         return r'DrawSpot("Clear")'
-        """
-        clear_spot clears all spot markers on an image in igor
 
-        Returns:
-            str: string command to send to igor
-        """
-
-        return r'DrawSpot("Clear")'
 
     def change_force_spot(self, force_spot, value):
         """
@@ -278,29 +175,9 @@ class MasterPanel(AFM):
         Returns:
             _type_: string command to send to igor 
         """
-      #  print(f'PV("{force_spot}", {value})')
+        
         return f'PV("{force_spot}", {value})'
 
-    def tip_to_spot(self):
-        """
-        tip_to_spot moves cantilever to the spot in igor
-
-        Returns:
-            str: string command to send to igor
-        """
-        return r"GoToSpot()"
-    def change_variable_max(self, variable:str, value):
-        """
-        change_variable_max Sets a max value of a parameter/variable within igor
-
-        Args:
-            variable (_type_):  name of the variable to change, NOTE:must be exactly how it is found in igor (case sensitive)
-            value (_type_): value to change the variable's max to
-
-          Returns:
-           str: string command to send to igor
-        """
-        return f'PVH("{variable}", {value})'
     def td_setramp(self, xpos, ypos, max_time=0.15):
         """
         td_setramp moves cantilever to the inputted spot in igor without needing a marker
@@ -328,6 +205,7 @@ class MasterPanel(AFM):
             str: string command to send to igor
         """
         return r"GoToSpot()"
+    
     def change_variable_max(self, variable:str, value):
         """
         change_variable_max Sets a max value of a parameter/variable within igor
@@ -340,37 +218,7 @@ class MasterPanel(AFM):
            str: string command to send to igor
         """
         return f'PVH("{variable}", {value})'
-    def td_setramp(self, xpos, ypos, max_time=0.15):
-        """
-        td_setramp moves cantilever to the inputted spot in igor without needing a marker
 
-        Returns:
-            str: string command to send to igor
-        """
-        
-        return f'td_SetRamp({max_time},"PIDSloop.0.Setpoint",0, {xpos},"PIDSloop.1.Setpoint",0, {ypos} ,"",0,0,"")'
-        
-    def show_tip(self):
-        """
-        show_tip ensures that the show tip checkbox in igor is checked
-
-        Returns:
-            str: string command to send to igor
-        """
-        return r'CheckBox ShowXYSpotCheck_1 value=1'
-
-
-    def update_params(self: Type["MasterPanel"], param: Union[str, _possible_params], value: Any):
-        """
-        update_params updates a parameter in igor 
-        and adds the resulting igor command to the command list to be sent  
-
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            param (str or _possible_params): parm from list of possible params or user inputted string NOTE:must be exactly how it is found in igor (case sensitive)
-            value (Any): value to change the parameter to
-        """
 
     def update_params(self: Type["MasterPanel"], param: Union[str, _possible_params], value: Any):
         """
@@ -408,29 +256,6 @@ class MasterPanel(AFM):
             param (_possible_PopupImage): a variable from list of most commonly used possible image popup menus to change or user inputted string NOTE:must be exactly how it is found in igor (case sensitive)
             value (Any): value to change the popup menu to
         """
-    def variable_max_update(self: Type["MasterPanel"], variable:str, value:Any):
-        """ 
-        variable_max_update creates the command that Sets a max value of a parameter/variable within igor
-        and adds the resulting igor command to the command list to be sent to igor
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            variable (_type_): the parameter which you want to update the max value of 
-            value (Any): _description_
-        """
-        self.on_update(self.change_variable_max(variable, value))
-
-    def update_PopupImage(self: Type["MasterPanel"], param: Union[str, _possible_PopupImage], value: Any):
-        """
-        update_PopupImage Updates the popup image menu in igor 
-        and adds the resulting igor command to the command list to be sent 
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            param (_possible_PopupImage): a variable from list of most commonly used possible image popup menus to change or user inputted string NOTE:must be exactly how it is found in igor (case sensitive)
-            value (Any): value to change the popup menu to
-        """
-        self.on_update(self.ChangePopupImage(param, value))
 
     def update_PopupForce(self: Type["MasterPanel"], param: Union[str, _possible_PopupForce] , value: Any):
         """
@@ -444,31 +269,6 @@ class MasterPanel(AFM):
             value (Any): value to change the popup menu to
         """
 
-    def update_PopupForce(self: Type["MasterPanel"], param: Union[str, _possible_PopupForce] , value: Any):
-        """
-        update_PopupForce updates the popup force menu you assign to it in igor 
-        and adds the resulting igor command to the command list to be sent 
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            param (_possible_PopupForce): a variable from list of most commonly used possible force popup menus to change 
-            or user inputted string NOTE:must be exactly how it is found in igor (case sensitive)
-            value (Any): value to change the popup menu to
-        """
-
-        self.on_update(self.ChangePopupForce(param, value))
-
-    def update_spot(self: Type["MasterPanel"], image_posx: Any, image_posy: Any):
-        """ 
-        update_spot creates the command that sends the image cursor to the inputted spot on a scan in igor 
-        and adds the resulting igor command to the command list to be sent
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            image_posx (Any): x point position
-            image_posy (Any): y point postion
-        """
-        self.on_update(self.go_to_image_spot(image_posx, image_posy))
     def update_spot(self: Type["MasterPanel"], image_posx: Any, image_posy: Any):
         """ 
         update_spot creates the command that sends the image cursor to the inputted spot on a scan in igor 
@@ -481,14 +281,6 @@ class MasterPanel(AFM):
         """
         self.on_update(self.go_to_image_spot(image_posx, image_posy))
 
-    def draw_update(self: Type["MasterPanel"]):
-        """ 
-        draw_update creates the command that draws a spot mark on a scan in igor
-        and adds the resulting igor command to the command list to be sent to igor
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-        """
     def draw_update(self: Type["MasterPanel"]):
         """ 
         draw_update creates the command that draws a spot mark on a scan in igor
@@ -507,27 +299,7 @@ class MasterPanel(AFM):
         Args:
             self (Type['MasterPanel']): MasterPanel class
         """
-    def clear_update(self: Type["MasterPanel"]):
-        """ 
-        clear_update creates the command that clears all spot markers on an image in igor
-        and adds the resulting igor command to the command list to be sent to igor
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-        """
         self.on_update(self.clear_spot())
-
-    def update_location(self: Type["MasterPanel"], force_spot, value: Any):
-        """ 
-        update_loction creates the command that assigns which number marker to move the cantilever to in igor
-        and adds the resulting igor command to the command list to be sent to igor
-
-        Args:
-            self (Type['MasterPanel']): MasterPanel class
-            force_spot (_type_): _description_
-            value (Any): _description_
-        """
-        self.on_update(self.change_force_spot(force_spot, value))
 
     def update_location(self: Type["MasterPanel"], force_spot, value: Any):
         """ 
