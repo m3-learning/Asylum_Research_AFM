@@ -34,7 +34,7 @@ except ImportError:
     from sphinx import apidoc
 
 output_dir = os.path.join(__location__, "api")
-module_dir = os.path.join(__location__, "../src/m3util")
+module_dir = os.path.join(__location__, "../src/asylum_research_afm")
 try:
     shutil.rmtree(output_dir)
 except FileNotFoundError:
@@ -91,7 +91,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "M3Learning-Util"
+project = "Asylum Research AFM"
 copyright = "2024, Joshua C. Agar"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -103,7 +103,7 @@ copyright = "2024, Joshua C. Agar"
 # If you don’t need the separation provided between version and release,
 # just set them both to the same value.
 try:
-    from m3util import __version__ as version
+    from asylum_research_afm import __version__ as version
 except ImportError:
     version = ""
 
@@ -266,7 +266,7 @@ html_last_updated_fmt = "%b %d, %Y"
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "m3util-doc"
+htmlhelp_basename = "asylum_research_afm-doc"
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -283,7 +283,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "user_guide.tex", "M3Learning-Util Documentation", "jagar2", "manual")
+    ("index", "user_guide.tex", "Asylum Research AFM Documentation", "jagar2", "manual")
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
